@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="2.7dp"
+        android:background="@color/editor_buttons_bg"
+        >
+
+        <Button
+            android:id="@+id/item_back1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:background="@color/item_back_bg"
+            android:textColor="@color/item_back_fg"
+            android:text="@string/item_back_txt" >
+        </Button>
+
+        <com.yiselieren.flexiclist.AutoResizeTextView
+            android:id="@+id/item_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="1/1"
+            android:textStyle="bold"
+            android:background="@color/item_number_bg"
+            android:textColor="@color/item_number_fg"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/item_back2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:background="@color/item_back_bg"
+            android:textColor="@color/item_back_fg"
+            android:text="@string/item_back_txt" >
+        </Button>
+    </LinearLayout>
+
+    <com.yiselieren.flexiclist.AutoResizeTextView
+        android:id="@+id/item_txt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2.7dp"
+        android:layout_weight="1"
+        android:background="@color/item_bg"
+        android:inputType="textMultiLine"
+        android:textStyle="bold"
+        android:textSize="@dimen/item_fontsize"
+        android:text="ITEM"
+        android:gravity="center"
+        android:textColor="@color/item_fg" />
+</LinearLayout>

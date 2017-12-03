@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_nocl_fontsize"> 28.0px </dimen>
+    <dimen name="main_cl_fontsize"> 36.0px </dimen>
+    <dimen name="main_cl_notesize"> 16.0px </dimen>
+    <dimen name="item_fontsize"> 56.0px </dimen>
+    <dimen name="items_fontsize"> 48.0px </dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="list_padding">0dp</dimen>
+    <dimen name="list_item_padding">16dp</dimen>
+</resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="main_no_cl_fg">#FF4040</color>
+    <color name="main_no_cl_bg">#D0D0D0</color>
+    <color name="main_cl_fg">#FFFFFF</color>
+    <color name="main_cl_note_fg">#FFFFD0</color>
+    <color name="main_cl_bg">#40A0FF</color>
+    <color name="main_cl_divider">#FFFFFF</color>
+
+    <color name="editor_title_bg">#404040</color>
+    <color name="editor_title_fg">#00FFFF</color>
+    <color name="editor_bg">#FFFFFF</color>
+    <color name="editor_fg">#000000</color>
+    <color name="editor_buttons_bg">#D0D0FF</color>
+    <color name="editor_button_save">#80D080</color>
+    <color name="editor_button_cancel">#D08080</color>
+
+    <color name="item_bg">#404080</color>
+    <color name="item_fg">#FFFFFF</color>
+    <color name="item_back_bg">#D04040</color>
+    <color name="item_back_fg">#D0D040</color>
+    <color name="item_number_bg">#FFFFFF</color>
+    <color name="item_number_fg">#000000</color>
+
+    <color name="items_fg">#000000</color>
+    <color name="items_checked_bg">#00FF00</color>
+    <color name="items_unchecked_bg">#FF0000</color>
+
+</resources>
