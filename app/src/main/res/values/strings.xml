@@ -1,6 +1,7 @@
 <resources>
     <string name="app_tag">flexiclist</string>
-    <string name="app_name">flexiclist</string>
+    <string name="app_name">FlexiCList</string>
+    <string name="app_label">FlexiCList</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">OK</string>
