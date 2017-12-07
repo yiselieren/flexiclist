@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GlobalContext = this;
+        Utils.Debug("****  onCreate: " + savedInstanceState);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -173,16 +174,6 @@ public class MainActivity extends AppCompatActivity {
             b.show();
             return true;
         } else if (id == R.id.action_import_file) {
-            //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            //intent.addCategory(Intent.CATEGORY_OPENABLE);
-            //intent.setType("*/*");
-            //try {
-            //    startActivityForResult(Intent.createChooser(intent, "Select a file"), FILE_SELECT_CODE);
-            //} catch (android.content.ActivityNotFoundException e) {
-            //    Toast.makeText(this, "Please install some File Manager.",
-            //            Toast.LENGTH_SHORT).show();
-            //    return true;
-            //}
             Intent getContentIntent = FileUtils.createGetContentIntent();
             Intent intent = Intent.createChooser(getContentIntent, "Select a file");
             try {
