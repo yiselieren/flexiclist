@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Items extends Activity {
 
@@ -26,67 +27,84 @@ public class Items extends Activity {
         setContentView(R.layout.items_layout);
         //setContentView(R.layout.cl_view_layout);
 
-        // Read parameters
-        final Intent data = getIntent();
-        if (data.getExtras() == null)
-            finish();
+        if (savedInstanceState == null)
+        {
+            // Read parameters
+            final Intent data = getIntent();
+            if (data.getExtras() == null)
+                finish();
 
-        final String fname = data.getStringExtra("filename");
-        if (fname == null) {
-            setResult(Activity.RESULT_CANCELED);
-            finish();
-        }
-
-        // ****
-        // Parse input file
-        // ****
-        prakim = new ArrayList<String>();
-        checked = new HashMap<String, Boolean>();
-        tohen = new HashMap<String, ArrayList<String>>();
-
-        BufferedReader br = null;
-        try {
-            File dir = getFilesDir();
-            br = new BufferedReader(new FileReader(new File(dir, fname)));
-        } catch (FileNotFoundException e) {
-            finish();
-            return;
-        }
-        String readLine;
-        String current = null;
-        try {
-            while ((readLine = br.readLine()) != null) {
-                // Line processing
-                if (readLine.trim().isEmpty())
-                    continue;
-                if (readLine.startsWith(" "))
-                {
-                    String r = readLine.trim();
-                    prakim.add(r);
-                    current = r;
-                    checked.put(r, false);
-                }
-                else if (current != null && !current.isEmpty())
-                {
-                    ArrayList<String> t = tohen.get(current);
-                    if (t == null)
-                        t = new ArrayList<String>();
-                    t.add(readLine.trim().replaceFirst("^[0-9]+\\. ", ""));
-                    tohen.put(current, t);
-                }
+            final String fname = data.getStringExtra("filename");
+            if (fname == null) {
+                setResult(Activity.RESULT_CANCELED);
+                finish();
             }
-        } catch (IOException e) {
-            finish();
-            return;
+
+            // ****
+            // Parse input file
+            // ****
+            prakim = new ArrayList<String>();
+            checked = new HashMap<String, Boolean>();
+            tohen = new HashMap<String, ArrayList<String>>();
+
+            BufferedReader br = null;
+            try {
+                File dir = getFilesDir();
+                br = new BufferedReader(new FileReader(new File(dir, fname)));
+            } catch (FileNotFoundException e) {
+                finish();
+                return;
+            }
+            String readLine;
+            String current = null;
+            try {
+                while ((readLine = br.readLine()) != null) {
+                    // Line processing
+                    if (readLine.trim().isEmpty())
+                        continue;
+                    if (readLine.startsWith(" ")) {
+                        String r = readLine.trim();
+                        prakim.add(r);
+                        current = r;
+                        checked.put(r, false);
+                    }
+                    else if (current != null && !current.isEmpty()) {
+                        ArrayList<String> t = tohen.get(current);
+                        if (t == null)
+                            t = new ArrayList<String>();
+                        t.add(readLine.trim().replaceFirst("^[0-9]+\\. ", ""));
+                        tohen.put(current, t);
+                    }
+                }
+            } catch (IOException e) {
+                finish();
+                return;
+            }
+            try {
+                br.close();
+            } catch (IOException e) { }
+
         }
-        try {
-            br.close();
-        } catch (IOException e) { }
+        else
+        {
+            prakim = savedInstanceState.getStringArrayList("prakim");
+            checked = new HashMap<String, Boolean>();
+            tohen = new HashMap<String, ArrayList<String>>();
+            for (String e : prakim) {
+                final String key = "checked." + e;
+                checked.put(e, savedInstanceState.getInt(key) != 0);
+            }
+            for (String e : prakim) {
+                final String key = "tohen." + e;
+                tohen.put(e, savedInstanceState.getStringArrayList(key));
+            }
+        }
 
         //// DEBUG print
         //Utils.Debug("PRAKIM:");
         //for (int i=0; i<prakim.size(); i++) {
         //    Utils.Debug("*** " + prakim.get(i));
+        //    Utils.Debug("Checked: " + checked.get(prakim.get(i)));
         //    for (int j=0; j<tohen.get(prakim.get(i)).size(); j++) {
         //        Utils.Debug("    " + tohen.get(prakim.get(i)).get(j));
         //    }
@@ -95,6 +113,17 @@ public class Items extends Activity {
         ListView lv = (ListView) findViewById(R.id.items_lv) ;
         Adapter2 ad = new Adapter2(this, prakim, tohen, checked);
         lv.setAdapter(ad);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        outState.putStringArrayList("prakim", prakim);
+        for (Map.Entry<String, Boolean> entry : checked.entrySet())
+            outState.putInt("checked." + entry.getKey(), entry.getValue() ? 1 : 0);
+        for (Map.Entry<String, ArrayList<String>> entry : tohen.entrySet())
+            outState.putStringArrayList("tohen." + entry.getKey(), entry.getValue());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
