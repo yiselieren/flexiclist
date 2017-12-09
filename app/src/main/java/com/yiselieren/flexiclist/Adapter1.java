@@ -1,5 +1,6 @@
 package com.yiselieren.flexiclist;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -117,7 +118,7 @@ public class Adapter1 extends BaseAdapter {
                 Intent intent = new Intent(cntx, Editor.class);
                 intent.putExtra("filename", names.get(position));
                 intent.putExtra("title", titles.get(list.get(position)));
-                cntx.startActivity(intent);
+                ((Activity)cntx).startActivityForResult(intent, MainActivity.EDIT_FILE);
             }
         });
         return v;

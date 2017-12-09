@@ -30,8 +30,8 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     public static Context GlobalContext = null;
-    private static final int FILE_SELECT_CODE = 56;
-    private static final int EDIT_FILE = 57;
+    public static final int FILE_SELECT_CODE = 56;
+    public static final int EDIT_FILE = 57;
     private ListView lv;
     private TextView tv;
 
@@ -231,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
                     Uri uri = data.getData();
                     String path = FileUtils.getPath(this, uri);
                     Utils.Debug("File path " + path);
+                    refreshList();
                 }
                 break;
             case EDIT_FILE:
