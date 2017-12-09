@@ -13,8 +13,9 @@
     <string name="action_import_file">Import checklist from file</string>
     <string name="action_import_url">Import checklist from URL</string>
     <string name="no_checklist">No checklists found.</string>
-    <string name="not_implemeted_title">Not implemented yet</string>
-    <string name="not_implemeted_url">Download checklist by URL not implemented yet</string>
+    <string name="not_implemented_title">Not implemented yet</string>
+    <string name="not_implemented_url">Download checklist by URL not implemented yet</string>
+    <string name="not_implemented_export">Export to file not implemented yet</string>
 
     <string name="remove_cl">Remove checklist</string>
     <string name="remove_cl1">Remove \"</string>
@@ -42,4 +43,6 @@
     <string name="create_new_title">Create new</string>
     <string name="already_exists_title">Already exists</string>
     <string name="already_exists_text">Checklist with this name already exists</string>
+    <string name="nothing_to_set_title">Nothing to set</string>
+    <string name="nothing_to_set_text">Nothing to set meanwhile. If you have an idea - leave me issue on https://github.com/yiselieren/flexiclist </string>
 </resources>

@@ -113,10 +113,23 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            // ************
             // *** Settings
+            // ************
+            AlertDialog.Builder b = new AlertDialog.Builder(this);
+            b.setTitle(getResources().getString(R.string.nothing_to_set_title));
+            b.setMessage(getResources().getString(R.string.nothing_to_set_text));
+            b.setPositiveButton(getResources().getString(R.string.ok),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        }
+                    });
+            b.show();
             return true;
         } else if (id == R.id.action_create) {
+            //  **************
             //  *** Create new
+            //  **************
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
             final Context cntx = this;
@@ -162,9 +175,12 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
             return true;
         } else if (id == R.id.action_import_url) {
+            // *******************
+            // *** Import from URL
+            // *******************
             AlertDialog.Builder b = new AlertDialog.Builder(this);
-            b.setTitle(getResources().getString(R.string.not_implemeted_title));
-            b.setMessage(R.string.not_implemeted_url);
+            b.setTitle(getResources().getString(R.string.not_implemented_title));
+            b.setMessage(R.string.not_implemented_url);
             b.setPositiveButton(R.string.ok,
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
@@ -174,6 +190,9 @@ public class MainActivity extends AppCompatActivity {
             b.show();
             return true;
         } else if (id == R.id.action_import_file) {
+            // ********************
+            // *** Import from file
+            // ********************
             Intent getContentIntent = FileUtils.createGetContentIntent();
             Intent intent = Intent.createChooser(getContentIntent, "Select a file");
             try {
@@ -184,6 +203,19 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         } else if (id == R.id.action_export_file) {
+            // ******************
+            // *** Export to file
+            // ******************
+            AlertDialog.Builder b = new AlertDialog.Builder(this);
+            b.setTitle(getResources().getString(R.string.not_implemented_title));
+            b.setMessage(R.string.not_implemented_export);
+            b.setPositiveButton(R.string.ok,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            ;
+                        }
+                    });
+            b.show();
             return true;
         }
 
