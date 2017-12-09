@@ -1,10 +1,14 @@
 package com.yiselieren.flexiclist;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Context;
@@ -32,8 +36,30 @@ public class MainActivity extends AppCompatActivity {
     public static Context GlobalContext = null;
     public static final int FILE_SELECT_CODE = 56;
     public static final int EDIT_FILE = 57;
+    public static final int READ_REQUEST = 58;
+    public static final int WRITE_REQUEST = 59;
     private ListView lv;
     private TextView tv;
+
+    private boolean askForRead() {
+        int perm = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        return perm == PackageManager.PERMISSION_GRANTED;
+    }
+    private void reqRead() {
+        if (! askForRead())
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_REQUEST);
+    }
+
+    private boolean askForWrite() {
+        int perm = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return perm == PackageManager.PERMISSION_GRANTED;
+    }
+    private void reqWrite() {
+        if (! askForWrite())
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_REQUEST);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,9 +255,22 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     // Get the Uri of the selected file
                     Uri uri = data.getData();
-                    String path = FileUtils.getPath(this, uri);
-                    Utils.Debug("File path " + path);
-                    refreshList();
+                    String path = null;
+                    try {
+                        path = uri.getLastPathSegment();
+                    } catch(NullPointerException e) {
+                        return;
+                    }
+                    if (path != null) {
+                        String iname = path;
+                        String oname = path.substring(path.lastIndexOf("/") + 1);
+                        int pos = oname.lastIndexOf(".");
+                        if (pos > 0) {
+                            oname = oname.substring(0, pos);
+                        }
+                        Utils.importExternal(this, iname, getFilesDir(), oname);
+                        refreshList();
+                    }
                 }
                 break;
             case EDIT_FILE:

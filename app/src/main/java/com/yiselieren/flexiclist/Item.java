@@ -27,22 +27,27 @@ public class Item extends Activity {
 
         // Read parameters
         final Intent data = getIntent();
-        if (data.getExtras() == null)
+        if (data.getExtras() == null) {
             finish();
+            return;
+        }
 
         perek = data.getStringExtra("perek");
         if (perek == null){
             setResult(Activity.RESULT_CANCELED);
             finish();
+            return;
         }
         list = data.getStringArrayListExtra("items_list");
         if (list == null) {
             setResult(Activity.RESULT_CANCELED);
             finish();
+            return;
         }
         if (list.size() < 1) {
             setResult(Activity.RESULT_CANCELED);
             finish();
+            return;
         }
 
         Button b1 = (Button) findViewById(R.id.item_back1);

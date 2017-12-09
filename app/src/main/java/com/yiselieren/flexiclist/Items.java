@@ -60,6 +60,7 @@ public class Items extends Activity {
             try {
                 while ((readLine = br.readLine()) != null) {
                     // Line processing
+                    //Utils.Debug("Parse file, line='" + readLine + "'");
                     if (readLine.trim().isEmpty())
                         continue;
                     if (readLine.startsWith(" ")) {
@@ -67,6 +68,7 @@ public class Items extends Activity {
                         prakim.add(r);
                         current = r;
                         checked.put(r, false);
+                        //Utils.Debug("Parse file, perek='" + r + "'");
                     }
                     else if (current != null && !current.isEmpty()) {
                         ArrayList<String> t = tohen.get(current);
@@ -74,8 +76,25 @@ public class Items extends Activity {
                             t = new ArrayList<String>();
                         t.add(readLine.trim().replaceFirst("^[0-9]+\\. ", ""));
                         tohen.put(current, t);
+                        //Utils.Debug("Parse file, add line='" +
+                        //        readLine.trim().replaceFirst("^[0-9]+\\. ", "") +
+                        //        "' to '" + current + "'");
                     }
                 }
+
+                // Now remove all empty "prakim"
+                ArrayList<String> prakim1 = new ArrayList<String>();
+                for (int i=0; i<prakim.size(); i++) {
+                    String p = prakim.get(i);
+                    if (tohen.containsKey(p)) {
+                        if (tohen.get(p).size() < 1)
+                            tohen.remove(p);
+                        else
+                            prakim1.add(p);
+                    }
+                }
+                prakim = prakim1;
+
             } catch (IOException e) {
                 finish();
                 return;

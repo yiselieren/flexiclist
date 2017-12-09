@@ -1,6 +1,7 @@
 package com.yiselieren.flexiclist;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -60,6 +61,49 @@ public class Utils {
         } catch (IOException e) {
         }
     }
+
+    public static void importExternal(Context cntx, String iname, File dir, String oname)
+    {
+        BufferedReader br = null;
+        BufferedWriter bw = null;
+        boolean abort = false;
+
+        // Input
+        try {
+            //br = new BufferedReader(new FileReader(new File(uri)));
+            br = new BufferedReader(new FileReader(new File(iname)));
+        } catch (IOException e) {
+            abort = true;
+        }
+
+        // Output
+        try {
+            bw = new BufferedWriter(new FileWriter(new File(dir, oname)));
+        } catch (IOException e) {
+            abort = true;
+        }
+
+        // Copy
+        if (!abort) {
+            try {
+                String readLine;
+                while ((readLine = br.readLine()) != null) {
+                    readLine += "\n";
+                    bw.write(readLine, 0, readLine.length());
+                }
+            } catch (IOException e) {
+            }
+        }
+
+        try {
+            if (br != null)
+                br.close();
+            if (bw != null)
+                bw.close();
+        } catch (IOException e) {
+        }
+    }
+
 
     public static String getTitle(File dir, String fname, String name)
     {
