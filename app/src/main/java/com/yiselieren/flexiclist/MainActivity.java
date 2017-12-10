@@ -45,20 +45,20 @@ public class MainActivity extends AppCompatActivity {
         int perm = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         return perm == PackageManager.PERMISSION_GRANTED;
     }
+
     private void reqRead() {
-        if (! askForRead())
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_REQUEST);
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_REQUEST);
     }
 
     private boolean askForWrite() {
         int perm = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return perm == PackageManager.PERMISSION_GRANTED;
     }
+
     private void reqWrite() {
-        if (! askForWrite())
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_REQUEST);
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_REQUEST);
     }
 
     @Override
@@ -84,9 +84,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (subFiles.length > 0)
-                refreshList();
-        else
-        {
+            refreshList();
+        else {
             // No checklist found
             ((ViewGroup) lv.getParent()).removeView(lv);
             tv.setGravity(Gravity.CENTER);
@@ -97,8 +96,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void refreshList()
-    {
+    private void refreshList() {
         File dir = getFilesDir();
         File[] subFiles = dir.listFiles();
 
@@ -219,34 +217,30 @@ public class MainActivity extends AppCompatActivity {
             // ********************
             // *** Import from file
             // ********************
-            Intent getContentIntent = FileUtils.createGetContentIntent();
-            Intent intent = Intent.createChooser(getContentIntent, "Select a file");
-            try {
-                startActivityForResult(intent, FILE_SELECT_CODE);
-            } catch (android.content.ActivityNotFoundException e) {
-                Toast.makeText(this, "Please install some File Manager.",
-                        Toast.LENGTH_SHORT).show();
+            if (askForRead()) {
+                Utils.Debug("READ granted");
+                importFromFile();
+            } else {
+                Utils.Debug("Ask for READ");
+                reqRead();
             }
             return true;
         } else if (id == R.id.action_export_file) {
             // ******************
             // *** Export to file
             // ******************
-            AlertDialog.Builder b = new AlertDialog.Builder(this);
-            b.setTitle(getResources().getString(R.string.not_implemented_title));
-            b.setMessage(R.string.not_implemented_export);
-            b.setPositiveButton(R.string.ok,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            ;
-                        }
-                    });
-            b.show();
+            if (askForWrite()) {
+                Utils.Debug("WRITE granted");
+                exportToFile();
+            } else {
+                Utils.Debug("Ask for WRITE");
+                reqWrite();
+            }
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -258,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                     String path = null;
                     try {
                         path = uri.getLastPathSegment();
-                    } catch(NullPointerException e) {
+                    } catch (NullPointerException e) {
                         return;
                     }
                     if (path != null) {
@@ -276,6 +270,59 @@ public class MainActivity extends AppCompatActivity {
             case EDIT_FILE:
                 refreshList();
                 break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case READ_REQUEST:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Utils.Debug("READ granted (1)");
+                    importFromFile();
+                } else {
+                    Utils.Debug("READ denied (1)");
+                }
+                return;
+
+            case WRITE_REQUEST:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Utils.Debug("WRITE granted (1)");
+                    exportToFile();
+
+                } else {
+                    Utils.Debug("WRITE denied (1)");
+                }
+                return;
+        }
+    }
+
+    private void exportToFile() {
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle(getResources().getString(R.string.not_implemented_title));
+        b.setMessage(R.string.not_implemented_export);
+        b.setPositiveButton(R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        ;
+                    }
+                });
+        b.show();
+    }
+
+    private void importFromFile() {
+        Intent getContentIntent = FileUtils.createGetContentIntent();
+        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
+        try {
+            startActivityForResult(intent, FILE_SELECT_CODE);
+        } catch(
+                android.content.ActivityNotFoundException e)
+        {
+            Toast.makeText(this, "Please install some File Manager.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -44,5 +44,5 @@
     <string name="already_exists_title">Already exists</string>
     <string name="already_exists_text">Checklist with this name already exists</string>
     <string name="nothing_to_set_title">Nothing to set</string>
-    <string name="nothing_to_set_text">Nothing to set meanwhile. If you have an idea - leave me issue on https://github.com/yiselieren/flexiclist </string>
+    <string name="nothing_to_set_text">Nothing to set meanwhile. If you have an idea - open issue on https://github.com/yiselieren/flexiclist </string>
 </resources>
