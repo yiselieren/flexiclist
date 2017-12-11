@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 public class Utils {
     public static void Debug(String msg)
     {
-        Log.d(MainActivity.GlobalContext.getResources().getString(R.string.app_tag), msg);
+        //Log.d(MainActivity.GlobalContext.getResources().getString(R.string.app_tag), msg);
     }
 
     public static void importInternal(Context cntx, int res, File dir, String oname)

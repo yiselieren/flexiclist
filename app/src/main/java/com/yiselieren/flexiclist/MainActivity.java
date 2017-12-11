@@ -276,9 +276,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        Utils.Debug("**** onRequestPermissionsResult(" + requestCode + "," + permissions + "," + grantResults);
         switch (requestCode) {
             case READ_REQUEST:
-                if (grantResults.length > 0
+                if (grantResults != null && grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Utils.Debug("READ granted (1)");
                     importFromFile();
@@ -288,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
 
             case WRITE_REQUEST:
-                if (grantResults.length > 0
+                if (grantResults != null && grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Utils.Debug("WRITE granted (1)");
                     exportToFile();
