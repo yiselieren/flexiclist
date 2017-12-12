@@ -62,18 +62,52 @@ public class Utils {
         }
     }
 
-    public static void importExternal(Context cntx, String iname, File dir, String oname)
+    public static void importExternal(Context cntx, Uri uri, File dir, String oname)
     {
         BufferedReader br = null;
         BufferedWriter bw = null;
         boolean abort = false;
 
+        //Utils.Debug("importExternal :");
+        //Utils.Debug("     Authority: " + uri.getAuthority());
+        //Utils.Debug("     Fragment: " + uri.getFragment());
+        //Utils.Debug("     Port: " + uri.getPort());
+        //Utils.Debug("     Query: " + uri.getQuery());
+        //Utils.Debug("     Scheme: " + uri.getScheme());
+        //Utils.Debug("     Host: " + uri.getHost());
+        //Utils.Debug("     Segments: " + uri.getPathSegments().toString());
+
         // Input
+        String iname = uri.getPath();
+        Utils.Debug("1: importExternal('" + iname + "', " + dir + "', '" + oname + "')");
         try {
-            //br = new BufferedReader(new FileReader(new File(uri)));
             br = new BufferedReader(new FileReader(new File(iname)));
         } catch (IOException e) {
             abort = true;
+        }
+        if (abort) {
+            abort = false;
+            iname = uri.getLastPathSegment();
+            Utils.Debug("2: importExternal('" + iname + "', " + dir + "', '" + oname + "')");
+            try {
+                br = new BufferedReader(new FileReader(new File(iname)));
+            } catch (IOException e) {
+                abort = true;
+            }
+        }
+        if (abort) {
+            abort = false;
+            iname = FileUtils.getPath(cntx, uri);
+            Utils.Debug("3: importExternal('" + iname + "', " + dir + "', '" + oname + "')");
+            try {
+                br = new BufferedReader(new FileReader(new File(iname)));
+            } catch (IOException e) {
+                abort = true;
+            }
+        }
+        if (abort) {
+            Utils.Debug("importExternal - can't open");
+            return;
         }
 
         // Output
@@ -82,17 +116,17 @@ public class Utils {
         } catch (IOException e) {
             abort = true;
         }
+        if (abort)
+            return;
 
         // Copy
-        if (!abort) {
-            try {
-                String readLine;
-                while ((readLine = br.readLine()) != null) {
-                    readLine += "\n";
-                    bw.write(readLine, 0, readLine.length());
-                }
-            } catch (IOException e) {
+        try {
+            String readLine;
+            while ((readLine = br.readLine()) != null) {
+                readLine += "\n";
+                bw.write(readLine, 0, readLine.length());
             }
+        } catch (IOException e) {
         }
 
         try {

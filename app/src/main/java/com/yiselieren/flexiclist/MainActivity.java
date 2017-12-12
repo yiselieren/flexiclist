@@ -249,22 +249,15 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     // Get the Uri of the selected file
                     Uri uri = data.getData();
-                    String path = null;
-                    try {
-                        path = uri.getLastPathSegment();
-                    } catch (NullPointerException e) {
-                        return;
+
+                    String path = uri.getLastPathSegment();
+                    String oname = path.substring(path.lastIndexOf("/") + 1);
+                    int pos = oname.lastIndexOf(".");
+                    if (pos > 0) {
+                        oname = oname.substring(0, pos);
                     }
-                    if (path != null) {
-                        String iname = path;
-                        String oname = path.substring(path.lastIndexOf("/") + 1);
-                        int pos = oname.lastIndexOf(".");
-                        if (pos > 0) {
-                            oname = oname.substring(0, pos);
-                        }
-                        Utils.importExternal(this, iname, getFilesDir(), oname);
-                        refreshList();
-                    }
+                    Utils.importExternal(this, uri, getFilesDir(), oname);
+                    refreshList();
                 }
                 break;
             case EDIT_FILE:
