@@ -56,22 +56,35 @@ public class Item extends Activity {
         Button b2 = (Button) findViewById(R.id.item_back2);
         b2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) { back(); }});
-
-        checked = new HashMap<String, Boolean>();
-        for (int i=0; i<list.size(); i++)
-            checked.put(list.get(i), false);
         number = (AutoResizeTextView) findViewById(R.id.item_number);
-        number.setText("1/" + list.size());
-        index = 1;
         item = (AutoResizeTextView) findViewById(R.id.item_txt);
-        item.setText(list.get(0));
-        checked.put(list.get(0), true);
+        checked = new HashMap<String, Boolean>();
+
+        if (savedInstanceState == null) {
+            for (int i = 0; i < list.size(); i++)
+                checked.put(list.get(i), false);
+            number.setText("1/" + list.size());
+            index = 1;
+            item.setText(list.get(0));
+            checked.put(list.get(0), true);
+
+        } else {
+            index = savedInstanceState.getInt("index");
+            item.setText(list.get(index-1));
+            number.setText(index + "/" + list.size());
+            for (int i = 0; i < list.size(); i++) {
+                final String key = "checked." + list.get(i);
+                checked.put(list.get(i), savedInstanceState.getInt(key) != 0);
+            }
+        }
+
         item.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final String s = ((TextView)v).getText().toString();
+                final String s = ((TextView) v).getText().toString();
                 checked.put(s, true);
                 next();
-            }});
+            }
+        });
     }
 
     public void back()
@@ -95,6 +108,13 @@ public class Item extends Activity {
             number.setText(index + "/" + list.size());
             item.setText(list.get(index-1));
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("index", index);
+        for (Map.Entry<String, Boolean> entry : checked.entrySet())
+            outState.putInt("checked." + entry.getKey(), entry.getValue() ? 1 : 0);
     }
 
     private void endActivity()
